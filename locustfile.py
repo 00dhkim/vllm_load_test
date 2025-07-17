@@ -25,7 +25,7 @@ class VllmChatUser(HttpUser):
         prompt = random.choice(self.prompts)
         payload = {
             "model": self.model,
-            "messages": [{"role": "user", "content": prompt}],
+            "messages": [{"role": "system", "content" : "/no_think \n너는 똑똑한 어시스턴트야"}, {"role": "user", "content": prompt}],
             "max_tokens": 128,
             "temperature": 0.7
         }
