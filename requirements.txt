@@ -1,0 +1,9 @@
+locust
+pyyaml
+pandas
+seaborn
+matplotlib
+numpy
+fastparquet
+pytest
+pyarrow

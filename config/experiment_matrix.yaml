@@ -1,0 +1,40 @@
+# config/experiment_matrix.yaml
+meta:
+  default_run_time: "3m"
+  repetitions: 2           # 각 조건 반복 (variance 추정)
+  output_root: "results/raw"
+
+common_env:
+  VLLM_HOST: "http://localhost:18802"
+  VLLM_API_KEY: "dummy"
+  VLLM_MODEL: "NousResearch/Meta-Llama-3-8B-Instruct"
+  REQUEST_TIMEOUT: 120
+
+factors:
+  gpu_counts: [1, 4]
+  users: [100, 200, 400, 800]
+  prompt_len_profile: ["short", "medium", "long"]
+  batch_size: [16, 32]
+  max_batched_tokens: [2048, 4096]
+  data_parallel: [1, 4]
+  tensor_parallel: [1]      # 후속으로 [1,2] 비교 (F1 실험)
+  quant_mode: ["fp16"]      # E1 실험시 "fp8", "int8" 추가
+profiles:
+  short:
+    prompts_file: config/prompts_short.txt
+    max_tokens: 64
+  medium:
+    prompts_file: config/prompts_medium.txt
+    max_tokens: 128
+  long:
+    prompts_file: config/prompts_long.txt
+    max_tokens: 256
+
+special_runs:
+  - name: speculative_decoding
+    enable: true
+    extra_env:
+      VLLM_ENABLE_SPEC_DECODE: "1"
+    restrict:
+      gpu_counts: [4]
+      prompt_len_profile: ["long"]
