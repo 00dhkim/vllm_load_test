@@ -1,22 +1,22 @@
 # config/experiment_matrix.yaml
 meta:
-  default_run_time: "3m"
-  repetitions: 2           # 각 조건 반복 (variance 추정)
+  default_run_time: "2m"
+  repetitions: 1           # 각 조건 반복 (variance 추정)
   output_root: "results/raw"
 
 common_env:
-  VLLM_HOST: "http://localhost:18802"
+  VLLM_HOST: "http://localhost:18806"
   VLLM_API_KEY: "dummy"
-  VLLM_MODEL: "./llm/Qwen3-14B"
+  VLLM_MODEL: "qwen3"
   REQUEST_TIMEOUT: 120
 
 factors:
-  gpu_counts: [1, 4]
+  gpu_counts: [4]
   users: [100, 200, 400, 800]
   prompt_len_profile: ["short", "medium", "long"]
   batch_size: [16, 32]
   max_batched_tokens: [2048, 4096]
-  data_parallel: [1, 4]
+  data_parallel: [4]
   tensor_parallel: [1]      # 후속으로 [1,2] 비교 (F1 실험)
   quant_mode: ["fp16"]      # E1 실험시 "fp8", "int8" 추가
 profiles:
