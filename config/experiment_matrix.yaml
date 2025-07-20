@@ -7,7 +7,7 @@ meta:
 common_env:
   VLLM_HOST: "http://localhost:18802"
   VLLM_API_KEY: "dummy"
-  VLLM_MODEL: "NousResearch/Meta-Llama-3-8B-Instruct"
+  VLLM_MODEL: "./llm/Qwen3-14B"
   REQUEST_TIMEOUT: 120
 
 factors:
