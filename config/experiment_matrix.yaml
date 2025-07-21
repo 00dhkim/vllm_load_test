@@ -5,29 +5,29 @@ meta:
   output_root: "results/raw"
 
 common_env:
-  VLLM_HOST: "http://localhost:18806"
-  VLLM_API_KEY: "dummy"
+  VLLM_MODEL_PATH: "/home/user1/ADD-LLM-service/llm/Qwen3-14B/"
+  VLLM_PORT: 18806
   VLLM_MODEL: "qwen3"
   REQUEST_TIMEOUT: 120
 
 factors:
-  gpu_counts: [4]
-  users: [100, 200, 400, 800]
+  gpu_counts: [1, 4]
+  request_rates: [10] # Replaces users with requests/sec
   prompt_len_profile: ["short", "medium", "long"]
   batch_size: [16, 32]
-  max_batched_tokens: [2048, 4096]
-  data_parallel: [4]
+  max_batched_tokens: [512]
+  data_parallel: [1, 4]
   tensor_parallel: [1]      # 후속으로 [1,2] 비교 (F1 실험)
   quant_mode: ["fp16"]      # E1 실험시 "fp8", "int8" 추가
 profiles:
   short:
-    prompts_file: config/prompts_short.txt
+    prompts_file: config/prompts_short.jsonl
     max_tokens: 64
   medium:
-    prompts_file: config/prompts_medium.txt
+    prompts_file: config/prompts_medium.jsonl
     max_tokens: 128
   long:
-    prompts_file: config/prompts_long.txt
+    prompts_file: config/prompts_long.jsonl
     max_tokens: 256
 
 special_runs:

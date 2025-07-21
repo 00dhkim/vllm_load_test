@@ -1,0 +1,24 @@
+services:
+  llm_server:
+    image: vllm/vllm-openai:v0.9.2
+    runtime: nvidia
+    # Docker Compose will automatically load the .env file in the same directory.
+    # The variables defined in .env will be available for substitution here
+    # and will also be passed to the container's environment.
+    env_file: .env
+    ipc: host
+    volumes:
+      - ${VLLM_MODEL_PATH}:/llm
+    ports:
+      - "${VLLM_PORT}:8000"
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        python3 -m vllm.entrypoints.openai.api_server \
+          --model /llm \
+          --served-model-name "$VLLM_MODEL_NAME" \
+          --max-model-len "$MAX_MODEL_LEN" \
+          --tensor-parallel-size "$TP" \
+          --data-parallel-size "$DP" \
+          --gpu-memory-utilization "$GPU_MEM_UTIL"
