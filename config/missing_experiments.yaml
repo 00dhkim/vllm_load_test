@@ -1,0 +1,51 @@
+common_env:
+  REQUEST_TIMEOUT: 120
+  VLLM_MODEL: qwen3
+  VLLM_MODEL_PATH: /home/user1/ADD-LLM-service/llm/Qwen3-14B/
+  VLLM_PORT: 18806
+factors:
+  batch_size:
+  - 8
+  - 16
+  data_parallel:
+  - 1
+  - 4
+  gpu_counts:
+  - 1
+  - 4
+  max_batched_tokens:
+  - 512
+  prompt_len_profile:
+  - long
+  - medium
+  - short
+  quant_mode:
+  - fp16
+  request_rates:
+  - 10
+  tensor_parallel:
+  - 1
+meta:
+  default_run_time: 2m
+  output_root: results/raw
+  repetitions: 1
+profiles:
+  long:
+    max_tokens: 256
+    prompts_file: config/prompts_long.jsonl
+  medium:
+    max_tokens: 128
+    prompts_file: config/prompts_medium.jsonl
+  short:
+    max_tokens: 64
+    prompts_file: config/prompts_short.jsonl
+special_runs:
+- enable: true
+  extra_env:
+    VLLM_ENABLE_SPEC_DECODE: '1'
+  name: speculative_decoding
+  restrict:
+    gpu_counts:
+    - 4
+    prompt_len_profile:
+    - long

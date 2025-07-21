@@ -14,7 +14,7 @@ factors:
   gpu_counts: [1, 4]
   request_rates: [10] # Replaces users with requests/sec
   prompt_len_profile: ["short", "medium", "long"]
-  batch_size: [16, 32]
+  batch_size: [8, 16]
   max_batched_tokens: [512]
   data_parallel: [1, 4]
   tensor_parallel: [1]      # 후속으로 [1,2] 비교 (F1 실험)

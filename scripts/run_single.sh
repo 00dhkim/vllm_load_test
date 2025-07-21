@@ -6,8 +6,9 @@ mkdir -p "$OUT_DIR/benchmark" "$OUT_DIR/gpu"
 
 # Set an initial empty value for DMON_PID
 DMON_PID=""
-# Trap to ensure all cleanup is handled on exit, even if some commands fail
-trap 'echo "Cleaning up..."; [ ! -z "$DMON_PID" ] && kill $DMON_PID || true; docker-compose down --remove-orphans; rm -f .env' EXIT
+# Trap to ensure all cleanup is handled on exit, even if some commands fail.
+# This saves server logs, stops the GPU monitor, shuts down containers, and removes the .env file.
+trap 'echo "Cleaning up for experiment ${EXP_ID}..."; [ ! -z "$DMON_PID" ] && kill $DMON_PID || true; echo "Saving server logs..."; docker-compose logs > "$OUT_DIR/server.log" 2>&1; docker-compose down --remove-orphans; rm -f .env' EXIT
 
 # 1) Create .env file for Docker Compose
 echo "Creating .env file for experiment: ${EXP_ID}"
@@ -15,8 +16,8 @@ cat > .env <<EOF
 # Docker-compose environment file for experiment ${EXP_ID}
 VLLM_MODEL_PATH=${VLLM_MODEL_PATH}
 VLLM_MODEL_NAME=${VLLM_MODEL}
-TP=${TP:-1}
-DP=${DP:-1}
+TP=${TP}
+DP=${DP}
 VLLM_PORT=${VLLM_PORT:-18806}
 MAX_MODEL_LEN=${MAX_MODEL_LEN:-32768}
 GPU_MEM_UTIL=${GPU_MEM_UTIL:-0.9}
@@ -35,6 +36,7 @@ ELAPSED=0
 while ! curl -s -f "http://localhost:${VLLM_PORT:-18806}/health"; do
     if [ $ELAPSED -ge $MAX_WAIT ]; then
         echo "Server failed to start within ${MAX_WAIT} seconds."
+        # The trap will handle log saving and cleanup
         exit 1
     fi
     sleep 5

@@ -54,15 +54,15 @@ def main():
                 print(f"Warning: Could not decode JSON from {result_file}")
                 continue
         
-        # Extract key metrics from the benchmark result
+        # Extract key metrics from the benchmark result, ensuring correct keys are used
         meta.update({
-            'successful_requests': data.get('successful_requests'),
-            'benchmark_duration_s': data.get('benchmark_duration_s'),
+            'successful_requests': data.get('completed'),
+            'benchmark_duration_s': data.get('duration'),
             'total_input_tokens': data.get('total_input_tokens'),
-            'total_generated_tokens': data.get('total_generated_tokens'),
-            'request_throughput_req_s': data.get('request_throughput_req/s'),
-            'output_token_throughput_tok_s': data.get('output_token_throughput_tok/s'),
-            'total_token_throughput_tok_s': data.get('total_token_throughput_tok/s'),
+            'total_generated_tokens': data.get('total_output_tokens'),
+            'request_throughput_req_s': data.get('request_throughput'),
+            'output_token_throughput_tok_s': data.get('output_throughput'),
+            'total_token_throughput_tok_s': data.get('total_token_throughput'),
             'mean_ttft_ms': data.get('mean_ttft_ms'),
             'median_ttft_ms': data.get('median_ttft_ms'),
             'p99_ttft_ms': data.get('p99_ttft_ms'),
