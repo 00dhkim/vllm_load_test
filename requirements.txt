@@ -1,0 +1,10 @@
+pyyaml
+pandas
+seaborn
+matplotlib
+numpy
+fastparquet
+pytest
+pyarrow
+nbconvert
+ipykernel

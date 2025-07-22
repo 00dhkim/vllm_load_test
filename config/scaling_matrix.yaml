@@ -1,0 +1,27 @@
+# config/scaling_matrix.yaml
+# Configuration for 1-GPU vs 4-GPU scaling comparison under high load.
+meta:
+  default_run_time: "1m"
+  repetitions: 1
+  output_root: "results/raw_scaling"
+
+common_env:
+  VLLM_MODEL_PATH: "/home/user1/ADD-LLM-service/llm/Qwen3-14B/"
+  VLLM_PORT: 18806
+  VLLM_MODEL: "qwen3"
+  REQUEST_TIMEOUT: 120
+
+factors:
+  gpu_counts: [1, 4]
+  request_rates: [10, 20, 30, 40, 50, 60]
+  prompt_len_profile: ["medium"]
+  batch_size: [16, 32]
+  max_batched_tokens: [512]
+  data_parallel: [1, 4]
+  tensor_parallel: [1]
+  quant_mode: ["fp16"]
+
+profiles:
+  medium:
+    prompts_file: config/prompts_medium.jsonl
+    max_tokens: 128
