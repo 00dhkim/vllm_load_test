@@ -17,8 +17,8 @@ services:
       - |
         python3 -m vllm.entrypoints.openai.api_server \
           --model /llm \
-          --served-model-name "$VLLM_MODEL_NAME" \
-          --max-model-len "$MAX_MODEL_LEN" \
+          --served-model-name "qwen3" \
+          --max-model-len "32768" \
           --tensor-parallel-size "$TP" \
           --data-parallel-size "$DP" \
-          --gpu-memory-utilization "$GPU_MEM_UTIL"
+          --gpu-memory-utilization "0.9"
