@@ -57,7 +57,15 @@ vllm_load_test/
 pip install -r requirements.txt
 ```
 
-**2. 실험 실행**
+**2. vLLM 서버 실행**
+
+docker compose를 이용하여 vLLM 서버를 실행합니다. 이때, `docker-compose.yml` 파일에 정의된 설정을 사용합니다.
+
+```bash
+docker compose up -d
+```
+
+**3. 실험 실행**
 
 각 실험 목적에 맞는 Python 스크립트를 실행합니다.
 
@@ -72,7 +80,7 @@ python scripts/3_run_scaling_test.py
 python scripts/1_run_matrix.py
 ```
 
-**3. 결과 집계 및 분석**
+**4. 결과 집계 및 분석**
 
 실험이 완료된 후, `results/raw/`에 저장된 원본 데이터를 집계하고 목적에 맞는 분석 노트북을 실행합니다.
 
